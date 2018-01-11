@@ -47,12 +47,17 @@ public class PelangganDaoImpl implements PelangganDao{
              
             connection.setAutoCommit(false);
            
-            statement = connection.prepareStatement(insertPelanggan);
+            statement = connection.prepareStatement(insertPelanggan, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, pelanggan.getNama());
             statement.setString(2, pelanggan.getAlamat());
             statement.setString(3, pelanggan.getTelepon());
             statement.setString(4, pelanggan.getEmail());
             statement.executeUpdate();
+            
+            ResultSet result = statement.getGeneratedKeys();
+            if (result.next()) {
+                     pelanggan.setId(result.getInt(1));
+                 }
             
             connection.commit();
             

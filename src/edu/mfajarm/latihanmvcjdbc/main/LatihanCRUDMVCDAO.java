@@ -9,8 +9,12 @@ import edu.mfajarm.latihanmvcjdbc.database.KingBarbershopDatabase;
 import edu.mfajarm.latihanmvcjdbc.entity.Pelanggan;
 import edu.mfajarm.latihanmvcjdbc.error.PelangganException;
 import edu.mfajarm.latihanmvcjdbc.service.PelangganDao;
+import edu.mfajarm.latihanmvcjdbc.view.MainViewPelanggan;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -27,8 +31,20 @@ public class LatihanCRUDMVCDAO {
         // TODO code application logic here
         
         
-        PelangganDao dao = KingBarbershopDatabase.getPelangganDao();
-        Pelanggan pelanggan = dao.getPelanggan("muhammadfajarm@gmail.com");
-        System.out.println("Nama "+ pelanggan.getNama());
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                
+                try {
+                    MainViewPelanggan pelanggan = new MainViewPelanggan();
+                    pelanggan.loadDatabase();
+                    pelanggan.setVisible(true);
+                } catch (SQLException e) {
+                } catch (PelangganException ex) {
+                    Logger.getLogger(LatihanCRUDMVCDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+        
+            }
+        });
     }
 }
